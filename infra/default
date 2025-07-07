@@ -1,10 +1,12 @@
+
 server {
-    server_name fortaski.ddns.net www.fortaski.ddns.net;
+    server_name 84.252.137.206 yalta.hopto.org;
+    server_tokens off;
 
     location /api/ {
         proxy_pass http://127.0.0.1:8000;
     }
-    
+
     location /admin/ {
         proxy_pass http://127.0.0.1:8000;
     }
@@ -17,63 +19,79 @@ server {
 
 
     listen 443 ssl; # managed by Certbot
-    ssl_certificate /etc/letsencrypt/live/fortaski.ddns.net/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/fortaski.ddns.net/privkey.pem; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/yalta.hopto.org/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/yalta.hopto.org/privkey.pem; # managed by Certbot
     include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
 
-}
+} 
+
 server {
-    if ($host = fortaski.ddns.net) {
+    if ($host = yalta.hopto.org) {
         return 301 https://$host$request_uri;
     } # managed by Certbot
 
 
 
     listen 80;
-    server_name fortaski.ddns.net;
+    server_name 84.252.137.206 yalta.hopto.org;
     return 404; # managed by Certbot
 
 
 }
+
 server {
-    server_name kittygramm.twilightparadox.com www.kittygramm.twilightparadox.com;
+    server_name 84.252.137.206 my-kittygram.ddns.net;
+    server_tokens off;
+
     location /media/ {
-        client_max_body_size 20M;
-        alias /var/www/kittygram/media/;
+        alias /var/www/infra_sprint1/media/;
     }
-    location /admin/ {
-        client_max_body_size 20M;
+
+    location /api/ {
         proxy_pass http://127.0.0.1:8080;
     }
-    location /api/ {
-        client_max_body_size 20M;
+
+    location /admin/ {
         proxy_pass http://127.0.0.1:8080;
     }
 
     location / {
-        root  /var/www/kittygram;
+        root   /var/www/infra_sprint1;
         index  index.html index.htm;
         try_files $uri /index.html;
     }
 
+    
+
 
     listen 443 ssl; # managed by Certbot
-    ssl_certificate /etc/letsencrypt/live/kittygramm.twilightparadox.com/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/kittygramm.twilightparadox.com/privkey.pem; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/my-kittygram.ddns.net/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/my-kittygram.ddns.net/privkey.pem; # managed by Certbot
     include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
 
 }
 
 server {
-    if ($host = kittygramm.twilightparadox.com) {
+    if ($host = my-kittygram.ddns.net) {
+        return 301 https://$host$request_uri;
+    } 
+
+    listen 80;
+    server_name 84.252.137.206 my-kittygram.ddns.net;
+    return 404;
+}
+
+
+server {
+    if ($host = my-kittygram.ddns.net) {
         return 301 https://$host$request_uri;
     } # managed by Certbot
 
 
+    server_name 84.252.137.206 my-kittygram.ddns.net;
     listen 80;
-    server_name kittygramm.twilightparadox.com www.kittygramm.twilightparadox.com;
     return 404; # managed by Certbot
 
 
