@@ -1,17 +1,17 @@
 import os
+import environ
 from pathlib import Path
 
-from dotenv import load_dotenv
-
-load_dotenv()
+env = environ.Env()
+environ.Env.read_env()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = env.str('SECRET_KEY', default='А Наташа молодец')
 
-DEBUG = False
+DEBUG = env.bool('DEBUG', default=False)
 
-ALLOWED_HOSTS =  ['84.252.137.206', '127.0.0.1', 'localhost', 'my-kittygram.ddns.net']
+ALLOWED_HOSTS = os.environ.get('HOSTS', '').split() 
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -94,12 +94,11 @@ USE_L10N = True
 USE_TZ = True
 
 
-
 STATIC_URL = '/static_backend/'
-STATIC_ROOT = BASE_DIR / 'static_backend' 
+STATIC_ROOT = BASE_DIR / 'static_backend'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = '/var/www/infra_sprint1/media'
+MEDIA_ROOT = '/var/www/kittygram/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
