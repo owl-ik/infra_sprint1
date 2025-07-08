@@ -1,5 +1,5 @@
-IP: 89.169.176.217
-name_taski: https://ваш-домен-taski
-name_kittygram: https://mykittygram.online
-login: qwerty
-password: 013156199q
+IP: 89.169.176.217;
+name_taski: https://ваш-домен-taski;
+name_kittygram: https://mykittygram.online;
+login: qwerty;
+password: 013156199q;
