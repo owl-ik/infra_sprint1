@@ -1,68 +1,71 @@
 server {
-    server_name 158.160.29.188 ckobar60.hopto.org;
-    location /api/ {
-        proxy_pass http://127.0.0.1:8000;
-    }
-    location /admin/ {
-        proxy_pass http://127.0.0.1:8000;
-    }
+    server_name mykittygram.online www.mykittygram.online;
+
+    root /var/www/kittygram;
+    index index.html;
+
     location / {
-        root /var/www/taski;
-        index index.html index.htm;
-        try_files $uri /index.html;
+        try_files $uri $uri/ /index.html;
     }
-    location /sentry-debug/ {
-        proxy_pass http://127.0.0.1:8000;
+
+    location /api/ {
+        proxy_pass http://unix:/var/run/gunicorn/kittygram.sock;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        client_max_body_size 20M;
     }
+
+    location /admin/ {
+        proxy_pass http://unix:/var/run/gunicorn/kittygram.sock;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        client_max_body_size 20M;
+    }
+
+    location /static/ {
+        alias /var/www/kittygram/static/;
+        expires 30d;
+        access_log off;
+    }
+
+    location /media/ {
+        alias /var/www/kittygram/media/;
+        expires 30d;
+        access_log off;
+        client_max_body_size 20M;
+    }
+
+    error_page 404 /404.html;
+    error_page 500 502 503 504 /50x.html;
+
+    access_log /var/log/nginx/kittygram_access.log;
+    error_log /var/log/nginx/kittygram_error.log;
+
     listen 443 ssl; # managed by Certbot
-    ssl_certificate /etc/letsencrypt/live/ckobar60.hopto.org/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/ckobar60.hopto.org/privkey.pem; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/mykittygram.online/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/mykittygram.online/privkey.pem; # managed by Certbot
     include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+
 }
 server {
-    if ($host = ckobar60.hopto.org) {
+    if ($host = www.mykittygram.online) {
         return 301 https://$host$request_uri;
     } # managed by Certbot
-    listen 80;
-    server_name 158.160.29.188 ckobar60.hopto.org;
-    return 404; # managed by Certbot
-}
-server {
-    server_name 158.160.29.188 ckobar60-kittygram.hopto.org;
-    location /api/ {
-        proxy_pass http://127.0.0.1:8080;
-    }
-    location /admin/ {
-        proxy_pass http://127.0.0.1:8080;
-    }
-   location /media/ {
-        alias /var/www/infra_sprint1/media/;
-   }
-    location / {
-        root /var/www/infra_sprint1;
-        index index.html index.htm;
-        try_files $uri /index.html;
-    }
-    listen 443 ssl; # managed by Certbot
-    ssl_certificate /etc/letsencrypt/live/ckobar60-kittygram.hopto.org/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/ckobar60-kittygram.hopto.org/privkey.pem; # managed by Certbot
-    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
-    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
-}
-server {
-    if ($host = ckobar60-kittygram.hopto.org) {
-        return 301 https://$host$request_uri;
-    }
-    listen 80;
-    server_name 158.160.29.188 ckobar60-kittygram.hopto.org;
-    return 404;
-}
-server {
-    if ($host = ckobar60-kittygram.hopto.org) {
+
+
+    if ($host = mykittygram.online) {
         return 301 https://$host$request_uri;
     } # managed by Certbot
-    server_name 158.160.29.188 ckobar60-kittygram.hopto.org;
+
+
     listen 80;
+    server_name mykittygram.online www.mykittygram.online;
     return 404; # managed by Certbot
+
+
+
+
 }
