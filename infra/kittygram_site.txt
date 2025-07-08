@@ -1,5 +1,5 @@
-IP: 158.160.73.243;
-name_taski: https://fortaski.ddns.net;
-name_kittygram: https://kittygramm.twilightparadox.com;
-login: yc-user;
-password: 34567;
+IP: 89.169.176.217
+name_taski: https://ваш-домен-taski
+name_kittygram: https://mykittygram.online
+login: owl
+password: 123456
