@@ -110,3 +110,6 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
 
 }
+
+MEDIA_ROOT = '/var/www/kittygram/media'
+MEDIA_URL = '/media/'
